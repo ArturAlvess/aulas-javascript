@@ -45,7 +45,7 @@
     // CallBack function to receive the grade 4
                 entradaDados.question('Digite a nota 4: \n', function(nota4){
                     let valor4 = nota4;
-                    let nedia;
+                    let media;
 
                     /*
                         Data type conversion
@@ -64,11 +64,26 @@
                     {
                         console.log('Existe algum número inválido')
                     } 
-                    else {
+                    else if(valor1 > 10 || valor2 > 10 || valor3 > 10 || valor4 > 10){
+                        console.log('Número fora de série. A nota máxima deverá ser 10.')
+                    }
+                    else if(valor1 < 0 || valor2 < 0 || valor3 < 0 || valor4 < 0){
+                        console.log('O valor não pode ser menor que 0.')
+                    }
+                    else{
                         media = (parseFloat(valor1) + parseFloat(valor2) + parseFloat(valor3) + parseFloat(valor4))/4;
 
-                        console.log(media);
+                        if(media < 7){
+                            console.log('Status do aluno: Reprovado.')
+                        }else{
+                            console.log('Status do aluno: Aprovado.')
+                        }
+                        console.log('Média do aluno: ' + media.toFixed(1));
+                        
+
+                        
                     }
+
                     
                 })
             });
