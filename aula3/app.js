@@ -54,7 +54,7 @@ const { O_NOCTTY } = require('constants');
             resultado = Number(primeiroValor) * Number(segundoValor)
             console.log('O resultado da sua conta é: ' + resultado.toFixed(1));
 
-          } if(escolha == 4 && primeiroValor == 0 || segundoValor == 0){
+          } if(escolha == 4 && segundoValor == 0){
             console.log('Não é possível dividir por 0')
           } else if(escolha == 4){
             resultado = Number(primeiroValor) / Number(segundoValor);
