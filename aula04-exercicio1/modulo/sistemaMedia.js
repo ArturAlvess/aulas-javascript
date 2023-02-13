@@ -20,7 +20,7 @@
     
     else{
         media = (nota1 + nota2 + nota3 + nota4) / 4;
-        console.log(media);
+        return media;
     }
 
     if(media > 70){
@@ -28,13 +28,30 @@
     } else if(media < 50)
         console.log('O aluno foi reprovado!')
 
-    // if (media == undefined) {
-    //     return false;
-    // } 
+        
+
+    if (media == undefined) {
+        return false;
+    } 
     
 
  }
 
+function calcularExame(numero1, numero2, numero3, numero4, numeroExame){
+    let nota1 = Number(numero1);
+    let nota2 = Number(numero2);
+    let nota3 = Number(numero3);
+    let nota4 = Number(numero4);
+    let media;
+    let notaExame = Number(numeroExame);
+
+    media = (nota1 + nota2 + nota3 + nota4) / 4;
+    let mediaExame = (media + notaExame) / 2;
+
+    return mediaExame;
+}
+
  module.exports = {
-     calcularMedia
+     calcularMedia,
+     calcularExame
 }
