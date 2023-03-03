@@ -24,7 +24,7 @@ const exibindoDados = function () {
 
     console.log(listaNomes[2]);
 
-    //  console.table(listaNomes);
+     console.log(listaNomes);
 
 
     // Traversing an array with While
@@ -189,13 +189,30 @@ const listagemProdutos = function () {
     listProdutosJSON.produtos[2].modelos = listModelosTeclado
     listProdutosJSON.produtos[7].modelos = listModelosTeclado
 
-    // console.log(listProdutosJSON);
+    console.log(listProdutosJSON);
 
-    let listaDeProdutoQnt = listProdutosJSON.produtos.length
+    // listProdutosJSON.produtos.forEach(function(itemProduto){
+    //     console.log('Nome: ' + itemProduto.nome);
+    //     console.log('Marca: ' + itemProduto.marca);
+    //     console.log('Valor: ' + 'R$ ' + itemProduto.valor);
 
-    for(let contador = 0; contador < listaDeProdutoQnt; contador++){
-        console.log('Nome do produto: ' + listProdutosJSON.produtos[contador].nome + '\n Marca: ' + listProdutosJSON.produtos[contador].marca)
-    }
+
+    //     if(itemProduto.cores != undefined){
+
+    //     //Percorrendo o array de cores dentro do array de produtos
+    //         itemProduto.cores.forEach(function(itemCor){
+    //             console.log('Cores: ' + itemCor)
+    //         })
+    //     }
+    //     if(itemProduto.modelos != undefined){
+    //     itemProduto.modelos.forEach(function(itemModelos){
+    //         console.log('Modelos: ' + itemModelos)
+    //     })
+    // }
+
+    // console.log('------------')
+    //     });
+   }
 
     // console.log('Nome: ' + listProdutosJSON.produtos[4].nome);
     // console.log('Marca: ' + listProdutosJSON.produtos[4].marca);
@@ -207,11 +224,12 @@ const listagemProdutos = function () {
     // console.log(listProdutosJSON.produtos[3])
 
 
-}
+
 
 //manipulandoDados();
 // console.log(removerProdutos('SSD'));
 // console.table(listaProdutos)
 // console.log(removerItem(listaProdutos, 'Mouse'))
 // console.table(listaProdutos)
-listagemProdutos();
+// listagemProdutos();
+exibindoDados();
