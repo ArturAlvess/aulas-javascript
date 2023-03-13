@@ -27,6 +27,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { request, response } = require('express');
 
+const estadosCidades = require('./modulo/module.js');
+
 // Cria um objeto com as características do express
 const app = express();
 
@@ -50,12 +52,136 @@ app.use((request, response, next)=>{
     // Async server para estabelecer um status de aguarde o processamento
         // OBS: Se não usar o async a requisição é perdida.
 app.get('/estados', cors(), async function(request, response, next){
-    const estadosCidades = require('./modulo/module.js');
+    
     let estados = estadosCidades.getListaEstados();
-    response.status(200);
-    response.json(estados)
+
+    // tratamento para validar o sucesso da requisição
+    if(estados)
+    {
+        response.status(200);
+        response.json(estados)
+    }
+    else
+    {
+        response.status(500);
+    }
 })
 
+//EndPoint: Lista os dados do estado filtrando pela sigla do estado
+app.get('/estado/:uf', cors(), async function(request, response, next){
+   
+    let statusCode;
+    let dadosEstado = {};
+    //Recebe a sigla do estado que será enviada pelo URL da requisição
+    let siglaEstado = request.params.uf; 
+
+    //Tratamento para validação de entrada de dados correta
+    if(siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2 || !isNaN(siglaEstado)){
+        statusCode = 400;
+        dadosEstado.message = 'Não foi possível processar pois os dados de entrada enviados não correspondem as exigências (não pode ser vazio, precisa de 2 digitos)'
+    }else{
+        let estado = estadosCidades.getDadosEstado(siglaEstado);
+
+        if(estado){
+            statusCode = 200;
+            dadosEstado = estado;
+        }else{
+            statusCode = 404;
+        }
+    }
+    // Return 
+    response.status(statusCode);
+    response.json(dadosEstado);
+});
+// EndPoint:
+app.get('/capital/:uf', cors(), async function(request, response, next){
+    let statusCode;
+    let dadosCapital = {};
+
+    let siglaEstado = request.params.uf;
+
+    if(siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2 || !isNaN(siglaEstado)){
+        statusCode = 400;
+        dadosCapital.message = 'Não foi possível processar pois os dados de entrada enviados não correspondem as exigências (não pode ser vazio, precisa de 2 digitos)'
+    }else{
+        let capital = estadosCidades.getCapitalEstado(siglaEstado);
+
+        if(capital){
+            statusCode = 200;
+            dadosCapital = capital;
+        } else{
+            statusCode = 404;
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosCapital)
+});
+
+app.get('/regiao/:nomeRegiao', cors(), async function(request, response, next){
+    let statusCode;
+    let dadosRegiao = {};
+
+    let estadoRegiao = request.params.nomeRegiao;
+
+    if(estadoRegiao == '' || estadoRegiao == undefined || !isNaN(estadoRegiao)){
+        statusCode = 400;
+        dadosRegiao.message = 'Não foi possível processar pois os dados de entrada enviados não correspondem as exigências (não pode ser vazio, precisa de 2 digitos)'
+    } else{
+        let regiao = estadosCidades.getEstadosRegiao(estadoRegiao);
+
+        if(regiao){
+            statusCode = 200;
+            dadosRegiao = regiao;
+        } else{
+            statusCode = 404
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosRegiao)
+})
+
+app.get('/capitalPais', cors(), async function(request, response, next){
+    let statusCode;
+    let dadosCapitalPais = {};
+
+    let capital = estadosCidades.getCapitalPais();
+
+    if(capital){
+        statusCode = 200;
+        dadosCapitalPais = capital;
+    } else{
+        statusCode = 404;
+    }
+
+    response.status(statusCode);
+    response.json(dadosCapitalPais)
+});
+
+app.get('/cidades/:uf', cors(), async function(request, response, next){
+    let statusCode;
+    let dadosCidades = {};
+
+    let siglaEstado = request.params.uf;
+
+    if(siglaEstado == '' || siglaEstado == undefined || !isNaN(siglaEstado)){
+        statusCode = 400;
+        dadosCidades.message = 'Não foi possível processar pois os dados de entrada enviados não correspondem as exigências (não pode ser vazio, precisa de 2 digitos)'
+    }else{
+        let cidades = estadosCidades.getCidades(siglaEstado)
+
+        if(cidades){
+            statusCode = 200;
+            dadosCidades = cidades;
+        }else{
+            statusCode = 404;
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosCidades)
+
+})
+//Roda o serviço da API para ficar aguardando requisições
 app.listen(8080, function(){
     console.log('Servidor aguardando requisições na porta 8080')
 });
+

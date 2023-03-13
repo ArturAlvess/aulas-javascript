@@ -8,7 +8,7 @@
 
 var listaBrasil = require('./estados_cidades.js')
 
-const getListaEstados = function(siglaEstado){
+const getListaEstados = function(){
     
     let listaDeSiglasArray = []
 
@@ -65,15 +65,15 @@ const getCapitalEstado = function(estadoSigla){
             
         }
     })
-
-}
-
     return listaCapitalJSON;
 
 }
 
-const getEstadosRegiao = function(estadoRegiao){
+    
 
+}
+
+const getEstadosRegiao = function(estadoRegiao){
    let estado = listaBrasil.estadosCidades.estados
    let listaInfoRegiaoJSON = {}
    let listaInfoRegiaoArray = []
