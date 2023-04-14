@@ -172,8 +172,7 @@ const getCidades = function(siglaEstado){
 }
     return listaCidadesJSON
 }
-
-module.exports = {
+4module.exports = {
     getListaEstados,
     getDadosEstado,
     getCapitalEstado,
