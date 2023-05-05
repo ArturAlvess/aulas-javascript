@@ -5,28 +5,70 @@
  * Versão: 1.0
  **************************************************************************************************************/
 
+// import da biblioteca do prisma client
+var { PrismaClient } = require('@prisma/client');
 
- // Insere dados do aluno no banco
- const insertAluno = function(){
+var prisma = new PrismaClient();
 
- }
+// Insere dados do aluno no banco
+const insertAluno = async function (dadosAluno) {
 
- // Atualiza os dados do aluno
- const updateAluno = function(){
+    let sql = `insert into tbl_aluno (
+        nome,
+        rg,
+        cpf,
+        data_nascimento,
+        email
+    )  values (
+        '${dadosAluno.nome}',
+        '${dadosAluno.rg}',
+        '${dadosAluno.cpf}',
+        '${dadosAluno.data_nascimento}',
+        '${dadosAluno.email}'
+    )` ;
 
+    let resultStatus = await prisma.$executeRawUnsafe(sql);
+    
+    if(resultStatus)
+        return true;
+    else
+        return false;
+
+}
+
+// Atualiza os dados do aluno
+const updateAluno = async function (dadosAluno) {
+    let sql = `update tbl_aluno set
+                        nome = '${dadosAluno.nome}',
+                        rg = '${dadosAluno.rg}',
+                        cpf = '${dadosAluno.cpf}',
+                        data_nascimento = '${dadosAluno.data_nascimento}',
+                        email = '${dadosAluno.email}'
+                    where id = ${dadosAluno.id}`;
+
+    let resultStatus = await prisma.$executeRawUnsafe(sql);
+
+    if(resultStatus)
+        return true;
+    else
+        return false;
 }
 
 // Deleta os dados do aluno
-const deleteAluno = function(){
+const deleteAluno = async function (id) {
+    let sql = `delete from tbl_aluno where id = '${id}'`
 
+    let resultStatus = await prisma.$executeRawUnsafe(sql);
+
+    if(resultStatus)
+        return true;
+    else
+        return false;
 }
 
-// Retorna todos os alunos do banco
-const selectAllAlunos = async function(){
-    // import da biblioteca do prisma client
-    let { PrismaClient } = require('@prisma/client');
 
-    let prisma = new PrismaClient();
+// Retorna todos os alunos do banco
+const selectAllAlunos = async function () {
 
     // ScriptSQL para buscar todos os itens no BD
     let sql = 'select * from tbl_aluno';
@@ -37,46 +79,41 @@ const selectAllAlunos = async function(){
 
     // Valida se o BD retornou algum registro
 
-    if(rsAluno.length > 0)
+    if (rsAluno.length > 0)
         return rsAluno;
     else
         return false;
-    
+
 }
 
 // Retorna o aluno filtrando o ID
-const selectByIdAluno = async function(id){
-    let { PrismaClient } = require('@prisma/client');
+const selectByIdAluno = async function (id) {
 
-    let prisma = new PrismaClient();
-    
     let idAluno = id;
 
     let sql = 'select * from tbl_aluno where id=' + idAluno;
 
     let rsAluno = await prisma.$queryRawUnsafe(sql)
 
-    if(rsAluno.length > 0){
+    if (rsAluno.length > 0) {
         return rsAluno;
-    } else{
+    } else {
         return false
     }
 }
 
 // Retorna o aluno filtrando pelo nome
-const selectByNameAluno = async function(nome){
+const selectByNameAluno = async function (nome) {
     let { PrismaClient } = require('@prisma/client');
 
     let prisma = new PrismaClient();
 
-    let nomeAluno = nome;
-
     // nomeAluno.replace('%', '4');
-    let sql = "select * from tbl_aluno where nome like" + nomeAluno;
+    let sql = `select * from tbl_aluno where nome like '${nome}%'`
 
     let rsAluno = await prisma.$queryRawUnsafe(sql)
 
-    if(rsAluno.length > 0){
+    if (rsAluno.length > 0) {
         return rsAluno;
     } else
         return false
@@ -85,5 +122,8 @@ const selectByNameAluno = async function(nome){
 module.exports = {
     selectAllAlunos,
     selectByIdAluno,
-    selectByNameAluno
+    selectByNameAluno,
+    insertAluno,
+    updateAluno,
+    deleteAluno
 }
