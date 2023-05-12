@@ -64,13 +64,8 @@ app.get('/v1/lion-school/aluno', cors(), async function (request, response) {
     let dadosAlunos = await controller.getStudents();
 
     //Valida se existe registros de aluno
-    if (dadosAlunos) {
-        response.json(dadosAlunos);
-        response.status(200)
-    } else {
-        response.json();
-        response.status(404)
-    }
+    response.status(dadosAlunos.status)
+    response.json(dadosAlunos)
 
 })
 
@@ -82,13 +77,8 @@ app.get('/v1/lion-school/aluno/:id', cors(), async function (request, response) 
 
     let dadosAlunos = await controller.findStudentsID(idAluno);
 
-    if (dadosAlunos) {
-        response.json(dadosAlunos)
-        response.status(200)
-    } else {
-        response.json();
-        response.status(404)
-    }
+   response.status(dadosAlunos.status);
+   response.json(dadosAlunos);
 })
 
 // Endpoint: Retorna o aluno filtrando pelo id
